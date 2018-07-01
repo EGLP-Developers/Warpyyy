@@ -1,0 +1,11 @@
+warp-created: {prefix}§aWarp {warp} erfolgreich an deiner aktuellen Position erstellt
+world-error: {prefix}§cDie Welt {world} existiert nicht mehr
+customwarp-created: {prefix}§aCustomwarp {customwarp} erfolgreich an deiner aktuellen Position erstellt
+no-customwarps: {prefix}§cEs existieren keine Customwarps
+warp-error: {prefix}§cDer Warp {warp} existiert nicht
+console-error: {prefix}§cNur Spieler können diesen Command verwenden
+perm-error: {prefix}§cSorry, aber du besitzt nicht die Berechtigung diesen Command zu nutzen
+no-warps: {prefix}§cEs existieren keine Warps
+disabled-customwarp-system: {prefix}§cSorry, aber das Customwarp System ist deaktiviert
+customwarp-error: {prefix}§cDer Customwarp {warp} existiert nicht
+warp-already-exist: {prefix}§cDer Warp existiert bereits

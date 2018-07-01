@@ -1,0 +1,11 @@
+name: Warpyyy
+version: 1.0
+authors: [MrLetsplay2003, Endergame15]
+main: me.Warpyyy.EGLP.main.Main
+commands:
+  setwarp:
+  delwarp:
+  warps:
+  warp:
+  customwarp:
+    aliases: [cw]
