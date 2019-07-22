@@ -1,9 +1,10 @@
 package me.Warpyyy.EGLP.main;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -12,14 +13,16 @@ import org.bukkit.inventory.ItemStack;
 
 import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUI;
 import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUIBuildEvent;
+import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUIBuildPageItemEvent;
 import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUIBuilder;
 import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUIBuilderMultiPage;
 import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUIElement;
-import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUIHolderPropertyMap;
 import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUIMultiPage;
 import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.ItemSupplier;
 import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.StaticGUIElement;
 import me.mrletsplay.mrcore.bukkitimpl.ItemUtils;
+import me.mrletsplay.mrcore.bukkitimpl.versioned.VersionedDyeColor;
+import me.mrletsplay.mrcore.bukkitimpl.versioned.VersionedMaterial;
 
 public class C_GUIs {
 	
@@ -44,9 +47,9 @@ public class C_GUIs {
 	}
 	
 	public static Inventory getSettingsGUI(Player p, CustomWarp cw) {
-		GUIHolderPropertyMap properties = new GUIHolderPropertyMap();
-		properties.put(Main.pl, "customwarp", cw);
-		return SETTINGS.getForPlayer(p, properties);
+		Map<String, Object> properties = new HashMap<>();
+		properties.put("customwarp", cw);
+		return SETTINGS.getForPlayer(p, Main.pl, properties);
 	}
 	
 	public static Inventory getWorldListGUI(Player p) {
@@ -54,9 +57,9 @@ public class C_GUIs {
 	}
 	
 	private static GUIMultiPage<World> buildWorldListGUI(){
-		GUIBuilderMultiPage<World> builder = new GUIBuilderMultiPage<>("§7§lWold management", 6);
+		GUIBuilderMultiPage<World> builder = new GUIBuilderMultiPage<>("Â§7Â§lWold management", 6);
 		
-		GUIElement gP = new StaticGUIElement(ItemUtils.createItem(Material.STAINED_GLASS_PANE, 1, 15, "§0"));
+		GUIElement gP = new StaticGUIElement(ItemUtils.createItem(VersionedMaterial.BLACK_STAINED_GLASS_PANE, 1, "Â§0"));
 		for(int i = 0; i < 6*9; i++) {
 			builder.addElement(i, gP);
 		}
@@ -72,18 +75,18 @@ public class C_GUIs {
 		builder.addElement(10, new GUIElement() {
 			@Override
 			public ItemStack getItem(GUIBuildEvent event) {
-				return ItemUtils.createItem(Material.DISPENSER, 1, 0, "§7§lInformation", 
-						"§7Existing worlds: §b" + Bukkit.getWorlds().size(),
-						"§7Enabled worlds: §b" + Main.getEnabledWorlds().size(),
+				return ItemUtils.createItem(Material.DISPENSER, 1, 0, "Â§7Â§lInformation", 
+						"Â§7Existing worlds: Â§b" + Bukkit.getWorlds().size(),
+						"Â§7Enabled worlds: Â§b" + Main.getEnabledWorlds().size(),
 						" ",
-						"§7(Click to sync)");
+						"Â§7(Click to sync)");
 			}
 		}.setAction(e -> {
 			List<World> w = Bukkit.getWorlds();
 			List<String> worlds = Main.getEnabledWorlds();
 			worlds.clear();
 			Config.cfg.set("enabled-worlds", worlds);
-			Config.cfg.saveConfigSafely();
+			Config.cfg.saveToFile();
 			
 			w.forEach(wo -> {
 				if(!Main.containsWorld(wo)) {
@@ -92,7 +95,7 @@ public class C_GUIs {
 			});
 			
 			Config.cfg.set("enabled-worlds", worlds);
-			Config.cfg.saveConfigSafely();
+			Config.cfg.saveToFile();
 			e.getGUI().refreshAllInstances();
 		}));
 		
@@ -104,12 +107,12 @@ public class C_GUIs {
 			}
 
 			@Override
-			public GUIElement toGUIElement(GUIBuildEvent event, World world) {
+			public GUIElement toGUIElement(GUIBuildPageItemEvent<World> event, World world) {
 				return new GUIElement() {
 					@Override
 					public ItemStack getItem(GUIBuildEvent event) {
-						return ItemUtils.createItem(Material.PAPER, 1, 0, "§a§l" + world.getName(),
-								(Main.containsWorld(world)?"§7Click to §cremove§7 world from the list":"§7Click to §aadd§7 world to the list"));
+						return ItemUtils.createItem(Material.PAPER, 1, 0, "Â§aÂ§l" + world.getName(),
+								(Main.containsWorld(world)?"Â§7Click to Â§cremoveÂ§7 world from the list":"Â§7Click to Â§aaddÂ§7 world to the list"));
 					}
 				}.setAction(e -> {
 					if(Main.containsWorld(world)) {
@@ -122,16 +125,16 @@ public class C_GUIs {
 			}
 		});
 		
-		builder.addPreviousPageItem(48, ItemUtils.createItem(ItemUtils.arrowLeft(DyeColor.WHITE), "§7Previous page"));
-		builder.addNextPageItem(52, ItemUtils.createItem(ItemUtils.arrowRight(DyeColor.WHITE), "§7Next page"));
+		builder.addPreviousPageItem(48, ItemUtils.createItem(ItemUtils.arrowLeft(VersionedDyeColor.WHITE), "Â§7Previous page"));
+		builder.addNextPageItem(52, ItemUtils.createItem(ItemUtils.arrowRight(VersionedDyeColor.WHITE), "Â§7Next page"));
 		
 		return builder.build();
 	}
 	
 	private static GUI buildSettingsGUI() {
-		GUIBuilder builder = new GUIBuilder("§7§lSettings", 3);
+		GUIBuilder builder = new GUIBuilder("Â§7Â§lSettings", 3);
 		
-		GUIElement gP = new StaticGUIElement(ItemUtils.createItem(Material.STAINED_GLASS_PANE, 1, 15, "§0"));
+		GUIElement gP = new StaticGUIElement(ItemUtils.createItem(VersionedMaterial.BLACK_STAINED_GLASS_PANE, 1, "Â§0"));
 		for(int i = 0; i < 3*9; i++) {
 			builder.addElement(i, gP);
 		}
@@ -146,7 +149,7 @@ public class C_GUIs {
 		builder.addElement(10, new GUIElement() {
 			@Override
 			public ItemStack getItem(GUIBuildEvent event) {
-				return ItemUtils.createItem(Material.DISPENSER, 1, 0, "§0");
+				return ItemUtils.createItem(Material.DISPENSER, 1, 0, "Â§0");
 			}
 		});
 		
@@ -154,11 +157,11 @@ public class C_GUIs {
 			
 			@Override
 			public ItemStack getItem(GUIBuildEvent event) {
-				CustomWarp w = (CustomWarp) event.getHolder().getProperty(Main.pl, "customwarp");
+				CustomWarp w = (CustomWarp) event.getGUIHolder().getProperty(Main.pl, "customwarp");
 				if(w.isPrivate()) {
-					return ItemUtils.createItem(Material.INK_SACK, 1, 8, "§aSet to public");
+					return ItemUtils.createItem(VersionedMaterial.GRAY_DYE, 1, "Â§aSet to public");
 				}else {
-					return ItemUtils.createItem(Material.INK_SACK, 1, 10, "§cSet to private");
+					return ItemUtils.createItem(VersionedMaterial.LIME_DYE, 1, "Â§cSet to private");
 				}
 			}
 		}.setAction(e -> {
@@ -172,7 +175,7 @@ public class C_GUIs {
 			
 			@Override
 			public ItemStack getItem(GUIBuildEvent event) {
-				return ItemUtils.createItem(Material.ENDER_PEARL, 1, 0, "§7§lBack");
+				return ItemUtils.createItem(Material.ENDER_PEARL, 1, 0, "Â§7Â§lBack");
 			}
 		}.setAction(e -> {
 			e.getPlayer().openInventory(getCustomWarpListGUI(e.getPlayer()));
@@ -182,9 +185,9 @@ public class C_GUIs {
 	}
 	
 	private static GUIMultiPage<CustomWarp> buildCustomWarpListGUI(){
-		GUIBuilderMultiPage<CustomWarp> builder = new GUIBuilderMultiPage<>("§7§lCustomwarps", 6);
+		GUIBuilderMultiPage<CustomWarp> builder = new GUIBuilderMultiPage<>("Â§7Â§lCustomwarps", 6);
 		
-		GUIElement gP = new StaticGUIElement(ItemUtils.createItem(Material.STAINED_GLASS_PANE, 1, 15, "§0"));
+		GUIElement gP = new StaticGUIElement(ItemUtils.createItem(VersionedMaterial.BLACK_STAINED_GLASS_PANE, 1, "Â§0"));
 		for(int i = 0; i < 6*9; i++) {
 			builder.addElement(i, gP);
 		}
@@ -202,9 +205,9 @@ public class C_GUIs {
 			public ItemStack getItem(GUIBuildEvent event) {
 				int my = Warps.myCustomWarps(event.getPlayer()).size();
 				int other = Warps.otherCustomWarps(event.getPlayer()).size();
-				return ItemUtils.createItem(Material.DISPENSER, 1, 0, "§7§lInformation", 
-						  "§7Own customwarps: §b" + my,
-						  "§7Public customwarps: §b" + other);
+				return ItemUtils.createItem(Material.DISPENSER, 1, 0, "Â§7Â§lInformation", 
+						  "Â§7Own customwarps: Â§b" + my,
+						  "Â§7Public customwarps: Â§b" + other);
 			}
 		});
 		
@@ -212,9 +215,9 @@ public class C_GUIs {
 			@Override
 			public ItemStack getItem(GUIBuildEvent event) {
 				if(Config.data.getBoolean(event.getPlayer().getUniqueId() + ".hide-other")) {
-					return ItemUtils.createItem(Material.INK_SACK, 1, 8, "§5Hide other customwarps");
+					return ItemUtils.createItem(VersionedMaterial.GRAY_DYE, 1, "Â§5Hide other customwarps");
 				}else {
-					return ItemUtils.createItem(Material.INK_SACK, 1, 10, "§7Show other customwarps");
+					return ItemUtils.createItem(VersionedMaterial.LIME_DYE, 1, "Â§7Show other customwarps");
 				}
 			}
 		}.setAction(e -> {
@@ -229,20 +232,20 @@ public class C_GUIs {
 		builder.setSupplier(new ItemSupplier<CustomWarp>() {
 			
 			@Override
-			public GUIElement toGUIElement(GUIBuildEvent event, CustomWarp item) {
+			public GUIElement toGUIElement(GUIBuildPageItemEvent<CustomWarp> event, CustomWarp item) {
 				return new GUIElement() {
 					
 					@Override
 					public ItemStack getItem(GUIBuildEvent event) {
-						return ItemUtils.createItem(Material.PAPER, 1, 0, "§6" + item.getName() + (!item.isPrivate() && !item.getUUID().equals(event.getPlayer().getUniqueId())?" §7(§bOwned by " + item.getPlayerFromUUID().getName() + "§7)":""), 
-								"§7World: §b" + item.getWorld(),
-								"§7X: §b" + item.getX(),
-								"§7Y: §b" + item.getY(),
-								"§7Z: §b" + item.getZ(),
-								"§7Yaw: §b" + item.getYaw(),
-								"§7Pitch: §b" + item.getPitch(),
+						return ItemUtils.createItem(Material.PAPER, 1, 0, "Â§6" + item.getName() + (!item.isPrivate() && !item.getUUID().equals(event.getPlayer().getUniqueId())?" Â§7(Â§bOwned by " + item.getPlayerFromUUID().getName() + "Â§7)":""), 
+								"Â§7World: Â§b" + item.getWorld(),
+								"Â§7X: Â§b" + item.getX(),
+								"Â§7Y: Â§b" + item.getY(),
+								"Â§7Z: Â§b" + item.getZ(),
+								"Â§7Yaw: Â§b" + item.getYaw(),
+								"Â§7Pitch: Â§b" + item.getPitch(),
 								(item.getPlayerFromUUID().equals(event.getPlayer())?" ":""),
-								(item.getPlayerFromUUID().equals(event.getPlayer())?"§7(Click to change settings)":""));
+								(item.getPlayerFromUUID().equals(event.getPlayer())?"Â§7(Click to change settings)":""));
 					}
 				}.setAction(e -> {
 					if(!item.getUUID().equals(event.getPlayer().getUniqueId())) return;
@@ -260,16 +263,16 @@ public class C_GUIs {
 			}
 		});
 		
-		builder.addPreviousPageItem(48, ItemUtils.createItem(ItemUtils.arrowLeft(DyeColor.WHITE), "§7Previous page"));
-		builder.addNextPageItem(52, ItemUtils.createItem(ItemUtils.arrowRight(DyeColor.WHITE), "§7Next page"));
+		builder.addPreviousPageItem(48, ItemUtils.createItem(ItemUtils.arrowLeft(VersionedDyeColor.WHITE), "Â§7Previous page"));
+		builder.addNextPageItem(52, ItemUtils.createItem(ItemUtils.arrowRight(VersionedDyeColor.WHITE), "Â§7Next page"));
 		
 		return builder.build();
 	}
 	
 	private static GUIMultiPage<CustomWarp> buildCustomWarpDelGUI(){
-		GUIBuilderMultiPage<CustomWarp> builder = new GUIBuilderMultiPage<>("§7§lClick to delete", 6);
+		GUIBuilderMultiPage<CustomWarp> builder = new GUIBuilderMultiPage<>("Â§7Â§lClick to delete", 6);
 		
-		GUIElement gP = new StaticGUIElement(ItemUtils.createItem(Material.STAINED_GLASS_PANE, 1, 15, "§0"));
+		GUIElement gP = new StaticGUIElement(ItemUtils.createItem(VersionedMaterial.BLACK_STAINED_GLASS_PANE, 1, "Â§0"));
 		for(int i = 0; i < 6*9; i++) {
 			builder.addElement(i, gP);
 		}
@@ -286,26 +289,26 @@ public class C_GUIs {
 			@Override
 			public ItemStack getItem(GUIBuildEvent event) {
 				int my = Warps.myCustomWarps(event.getPlayer()).size();
-				return ItemUtils.createItem(Material.DISPENSER, 1, 0, "§7§lInformation", 
-						  "§7Created customwarps: §b" + my);
+				return ItemUtils.createItem(Material.DISPENSER, 1, 0, "Â§7Â§lInformation", 
+						  "Â§7Created customwarps: Â§b" + my);
 			}
 		});
 		
 		builder.setSupplier(new ItemSupplier<CustomWarp>() {
 			
 			@Override
-			public GUIElement toGUIElement(GUIBuildEvent event, CustomWarp item) {
+			public GUIElement toGUIElement(GUIBuildPageItemEvent<CustomWarp> event, CustomWarp item) {
 				return new GUIElement() {
 					
 					@Override
 					public ItemStack getItem(GUIBuildEvent event) {
-						return ItemUtils.createItem(Material.PAPER, 1, 0, "§6" + item.getName(), 
-								"§7World: §b" + item.getWorld(),
-								"§7X: §b" + item.getX(),
-								"§7Y: §b" + item.getY(),
-								"§7Z: §b" + item.getZ(),
-								"§7Yaw: §b" + item.getYaw(),
-								"§7Pitch: §b" + item.getPitch());
+						return ItemUtils.createItem(Material.PAPER, 1, 0, "Â§6" + item.getName(), 
+								"Â§7World: Â§b" + item.getWorld(),
+								"Â§7X: Â§b" + item.getX(),
+								"Â§7Y: Â§b" + item.getY(),
+								"Â§7Z: Â§b" + item.getZ(),
+								"Â§7Yaw: Â§b" + item.getYaw(),
+								"Â§7Pitch: Â§b" + item.getPitch());
 					}
 				}.setAction(e -> {
 					Warps.deleteCustomWarp(event.getPlayer(), item);
@@ -319,8 +322,8 @@ public class C_GUIs {
 			}
 		});
 		
-		builder.addPreviousPageItem(48, ItemUtils.createItem(ItemUtils.arrowLeft(DyeColor.WHITE), "§7Previous page"));
-		builder.addNextPageItem(52, ItemUtils.createItem(ItemUtils.arrowRight(DyeColor.WHITE), "§7Next page"));
+		builder.addPreviousPageItem(48, ItemUtils.createItem(ItemUtils.arrowLeft(VersionedDyeColor.WHITE), "Â§7Previous page"));
+		builder.addNextPageItem(52, ItemUtils.createItem(ItemUtils.arrowRight(VersionedDyeColor.WHITE), "Â§7Next page"));
 		
 		return builder.build();
 	}

@@ -13,7 +13,7 @@ import me.Warpyyy.EGLP.main.Main;
 import me.Warpyyy.EGLP.main.Messages;
 import me.Warpyyy.EGLP.main.Warps;
 
-public class CustomWarp_CMD implements CommandExecutor{
+public class CommandCustomWarp implements CommandExecutor{
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -85,13 +85,13 @@ public class CustomWarp_CMD implements CommandExecutor{
 	}
 	
 	private static boolean sendCommandHelp(CommandSender sender) {
-		sender.sendMessage("ง7Command help:");
-		sender.sendMessage("ง7/cw list - List all customwarps");
-		sender.sendMessage("ง7/cw create <warpname> - Create a customwarp");
-		sender.sendMessage("ง7/cw delete - Show a gui to delete a customwarp");
-		sender.sendMessage("ง7/cw tp <warpname> - Teleport you to a customwarp");
+		sender.sendMessage("ยง7Command help:");
+		sender.sendMessage("ยง7/cw list - List all customwarps");
+		sender.sendMessage("ยง7/cw create <warpname> - Create a customwarp");
+		sender.sendMessage("ยง7/cw delete - Show a gui to delete a customwarp");
+		sender.sendMessage("ยง7/cw tp <warpname> - Teleport you to a customwarp");
 		if(sender.hasPermission(Main.perm_customwarps_settings)) {
-			sender.sendMessage("ง7/cw worlds - Show a world list gui");
+			sender.sendMessage("ยง7/cw worlds - Show a world list gui");
 		}
 		return true;
 	}

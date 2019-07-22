@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import me.mrletsplay.mrcore.misc.Complex;
+
 public class Warps {
 	
 	//Warps
@@ -25,7 +27,7 @@ public class Warps {
 	}
 	
 	public static void loadWarps() {
-		warps = Config.warps.getMappableList("warps", Warp.class, new ArrayList<>(), false);
+		warps = Config.warps.getComplex("warps", Complex.list(Warp.class), new ArrayList<>(), false);
 	}
 	
 	public static Warp getWarp(String name) {
@@ -41,7 +43,7 @@ public class Warps {
 	
 	public static void saveWarps() {
 		Config.warps.set("warps", warps);
-		Config.warps.saveConfigSafely();
+		Config.warps.saveToFile();
 	}
 	
 	//CustomWarps
@@ -68,7 +70,7 @@ public class Warps {
 	}
 	
 	public static void loadCustomWarps() {
-		cWarps = Config.c_warps.getMappableList("customwarps", CustomWarp.class, new ArrayList<>(), false);
+		cWarps = Config.c_warps.getComplex("customwarps", Complex.list(CustomWarp.class), new ArrayList<>(), false);
 	}
 	
 	public static List<CustomWarp> getCustomWarps(Player p){
@@ -91,7 +93,7 @@ public class Warps {
 	
 	public static void saveCustomWarps() {
 		Config.c_warps.set("customwarps", cWarps);
-		Config.c_warps.saveConfigSafely();
+		Config.c_warps.saveToFile();
 	}
 
 }

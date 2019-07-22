@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import me.mrletsplay.mrcore.config.ConfigLoader;
 import me.mrletsplay.mrcore.config.CustomConfig;
-import me.mrletsplay.mrcore.config.LocaleProvider;
-import me.mrletsplay.mrcore.config.LocaleProvider.CustomLocaleProvider;
-import me.mrletsplay.mrcore.config.LocaleProvider.Locale;
+import me.mrletsplay.mrcore.config.impl.DefaultFileCustomConfig;
+import me.mrletsplay.mrcore.config.locale.LocaleProvider;
+import me.mrletsplay.mrcore.config.locale.LocaleProvider.CustomLocaleProvider;
+import me.mrletsplay.mrcore.config.locale.LocaleProvider.Locale;
 
 public class Messages {
 	
@@ -19,28 +21,28 @@ public class Messages {
 		localeProvider = new LocaleProvider(new File(Main.pl.getDataFolder(), "lang"));
 		localeProvider.setCustomLocaleProvider(new CustomLocaleProvider(new File(Main.pl.getDataFolder(), "lang")));
 	
-		CustomConfig en = new CustomConfig((File) null);
+		CustomConfig en = new DefaultFileCustomConfig(null);
 		
-		en.addDefault("console-error", "{prefix}§cOnly players can use this command");
-		en.addDefault("perm-error", "{prefix}§cSorry, but you don't have the permission to use this command");
+		en.addDefault("console-error", "{prefix}Â§cOnly players can use this command");
+		en.addDefault("perm-error", "{prefix}Â§cSorry, but you don't have the permission to use this command");
 		
-		en.addDefault("warp-created", "{prefix}§aSuccessfully created warp {warp} on your current location");
-		en.addDefault("no-warps", "{prefix}§cNo existing warps");
+		en.addDefault("warp-created", "{prefix}Â§aSuccessfully created warp {warp} on your current location");
+		en.addDefault("no-warps", "{prefix}Â§cNo existing warps");
 		
-		en.addDefault("disabled-customwarp-system", "{prefix}§cSorry, but the customwarp system is disabled");
-		en.addDefault("customwarp-created", "{prefix}§aSuccessfully created customwarp {customwarp} on you current location");
-		en.addDefault("no-customwarps", "{prefix}§cNo existing customwarps");
+		en.addDefault("disabled-customwarp-system", "{prefix}Â§cSorry, but the customwarp system is disabled");
+		en.addDefault("customwarp-created", "{prefix}Â§aSuccessfully created customwarp {customwarp} on you current location");
+		en.addDefault("no-customwarps", "{prefix}Â§cNo existing customwarps");
 
-		en.addDefault("customwarp-error", "{prefix}§cThe warp {warp} doesn't exist");
-		en.addDefault("warp-error", "{prefix}§cThe warp {warp} doesn't exist");
-		en.addDefault("world-error", "{prefix}§cThe world {world} doesn't exist anymore");
-		en.addDefault("warp-already-exist", "{prefix}§cWarp already exist");
+		en.addDefault("customwarp-error", "{prefix}Â§cThe warp {warp} doesn't exist");
+		en.addDefault("warp-error", "{prefix}Â§cThe warp {warp} doesn't exist");
+		en.addDefault("world-error", "{prefix}Â§cThe world {world} doesn't exist anymore");
+		en.addDefault("warp-already-exist", "{prefix}Â§cWarp already exist");
 		
-		en.applyDefaults(false, true);
+		en.applyDefaults();
 		
-		CustomConfig de = new CustomConfig((File) null);
-		
-		de.loadDefaultFromClassPathSafely("de.yml", false, Main.class);
+		CustomConfig de = new DefaultFileCustomConfig(null);
+		de.addDefaults(ConfigLoader.loadStreamConfig(Main.pl.getResource("de.yml"), true));
+		de.applyDefaults();
 		
 		localeProvider.registerLocale("de", de);
 		localeProvider.registerLocale("en", en);

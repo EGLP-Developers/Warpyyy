@@ -13,7 +13,7 @@ import me.Warpyyy.EGLP.main.Messages;
 import me.Warpyyy.EGLP.main.Warp;
 import me.Warpyyy.EGLP.main.Warps;
 
-public class Warp_CMDs implements CommandExecutor{
+public class CommandWarp implements CommandExecutor{
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -80,11 +80,11 @@ public class Warp_CMDs implements CommandExecutor{
 	}
 	
 	private static boolean sendCommandHelp(CommandSender sender) {
-		sender.sendMessage("ง7Command help:");
-		sender.sendMessage("ง7/warp <Warp> - Teleport you to a created warp");
-		sender.sendMessage("ง7/setwarp <name> - Create a warp");
-		sender.sendMessage("ง7/delwarp - Show a gui to delete a created warp");
-		sender.sendMessage("ง7/warps - Show a gui with all warps");
+		sender.sendMessage("ยง7Command help:");
+		sender.sendMessage("ยง7/warp <Warp> - Teleport you to a created warp");
+		sender.sendMessage("ยง7/setwarp <name> - Create a warp");
+		sender.sendMessage("ยง7/delwarp - Show a gui to delete a created warp");
+		sender.sendMessage("ยง7/warps - Show a gui with all warps");
 		return true;
 	}
 

@@ -2,18 +2,20 @@ package me.Warpyyy.EGLP.main;
 
 import java.util.List;
 
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUIBuildEvent;
+import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUIBuildPageItemEvent;
 import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUIBuilderMultiPage;
 import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUIElement;
 import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUIMultiPage;
 import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.ItemSupplier;
 import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.StaticGUIElement;
 import me.mrletsplay.mrcore.bukkitimpl.ItemUtils;
+import me.mrletsplay.mrcore.bukkitimpl.versioned.VersionedDyeColor;
+import me.mrletsplay.mrcore.bukkitimpl.versioned.VersionedMaterial;
 
 public class GUIs {
 
@@ -33,9 +35,9 @@ public class GUIs {
 	}
 	
 	private static GUIMultiPage<Warp> buildDelWarpGUI(){
-		GUIBuilderMultiPage<Warp> builder = new GUIBuilderMultiPage<>("§7§lSelect a warp to delete", 6);
+		GUIBuilderMultiPage<Warp> builder = new GUIBuilderMultiPage<>("Â§7Â§lSelect a warp to delete", 6);
 		
-		GUIElement gP = new StaticGUIElement(ItemUtils.createItem(Material.STAINED_GLASS_PANE, 1, 15, "§0"));
+		GUIElement gP = new StaticGUIElement(ItemUtils.createItem(VersionedMaterial.BLACK_STAINED_GLASS_PANE, 1, "Â§0"));
 		for(int i = 0; i < 6*9; i++) {
 			builder.addElement(i, gP);
 		}
@@ -51,29 +53,31 @@ public class GUIs {
 		builder.addElement(10, new GUIElement() {
 			@Override
 			public ItemStack getItem(GUIBuildEvent event) {
-				return ItemUtils.createItem(Material.DISPENSER, 1, 0, "§7§lInformation", 
-						  "§7Listed warps: §b" + Warps.getWarps().size());
+				return ItemUtils.createItem(Material.DISPENSER, 1, 0, "Â§7Â§lInformation", 
+						  "Â§7Listed warps: Â§b" + Warps.getWarps().size());
 			}
 		});
 		
 		builder.setSupplier(new ItemSupplier<Warp>() {
 			
 			@Override
-			public GUIElement toGUIElement(GUIBuildEvent event, Warp item) {
+			public GUIElement toGUIElement(GUIBuildPageItemEvent<Warp> event, Warp item) {
 				return new GUIElement() {
 					
 					@Override
 					public ItemStack getItem(GUIBuildEvent event) {
-						return ItemUtils.createItem(Material.PAPER, 1, 0, "§6" + item.getName(), 
-								"§7World: §b" + item.getWorld(),
-								"§7X: §b" + item.getX(),
-								"§7Y: §b" + item.getY(),
-								"§7Z: §b" + item.getZ(),
-								"§7Yaw: §b" + item.getYaw(),
-								"§7Pitch: §b" + item.getPitch());
+						return ItemUtils.createItem(Material.PAPER, 1, 0, "Â§6" + item.getName(), 
+								"Â§7World: Â§b" + item.getWorld(),
+								"Â§7X: Â§b" + item.getX(),
+								"Â§7Y: Â§b" + item.getY(),
+								"Â§7Z: Â§b" + item.getZ(),
+								"Â§7Yaw: Â§b" + item.getYaw(),
+								"Â§7Pitch: Â§b" + item.getPitch(),
+								"Â§cClick to delete");
 					}
 				}.setAction(e -> {
 					Warps.deleteWarp(item);
+					DEL_WARP_GUI.refreshAllInstances();
 				});
 			}
 			
@@ -83,16 +87,16 @@ public class GUIs {
 			}
 		});
 		
-		builder.addPreviousPageItem(48, ItemUtils.createItem(ItemUtils.arrowLeft(DyeColor.WHITE), "§7Previous page"));
-		builder.addNextPageItem(52, ItemUtils.createItem(ItemUtils.arrowRight(DyeColor.WHITE), "§7Next page"));
+		builder.addPreviousPageItem(48, ItemUtils.createItem(ItemUtils.arrowLeft(VersionedDyeColor.WHITE), "Â§7Previous page"));
+		builder.addNextPageItem(52, ItemUtils.createItem(ItemUtils.arrowRight(VersionedDyeColor.WHITE), "Â§7Next page"));
 		
 		return builder.build();
 	}
 	
 	private static GUIMultiPage<Warp> buildWarpListGUI(){
-		GUIBuilderMultiPage<Warp> builder = new GUIBuilderMultiPage<>("§7§lWarps", 6);
+		GUIBuilderMultiPage<Warp> builder = new GUIBuilderMultiPage<>("Â§7Â§lWarps", 6);
 		
-		GUIElement gP = new StaticGUIElement(ItemUtils.createItem(Material.STAINED_GLASS_PANE, 1, 15, "§0"));
+		GUIElement gP = new StaticGUIElement(ItemUtils.createItem(VersionedMaterial.BLACK_STAINED_GLASS_PANE, 1, "Â§0"));
 		for(int i = 0; i < 6*9; i++) {
 			builder.addElement(i, gP);
 		}
@@ -108,30 +112,28 @@ public class GUIs {
 		builder.addElement(10, new GUIElement() {
 			@Override
 			public ItemStack getItem(GUIBuildEvent event) {
-				return ItemUtils.createItem(Material.DISPENSER, 1, 0, "§7§lInformation", 
-						  "§7Listed warps: §b" + Warps.getWarps().size());
+				return ItemUtils.createItem(Material.DISPENSER, 1, 0, "Â§7Â§lInformation", 
+						  "Â§7Listed warps: Â§b" + Warps.getWarps().size());
 			}
 		});
 		
 		builder.setSupplier(new ItemSupplier<Warp>() {
 			
 			@Override
-			public GUIElement toGUIElement(GUIBuildEvent event, Warp item) {
+			public GUIElement toGUIElement(GUIBuildPageItemEvent<Warp> event, Warp item) {
 				return new GUIElement() {
 					
 					@Override
 					public ItemStack getItem(GUIBuildEvent event) {
-						return ItemUtils.createItem(Material.PAPER, 1, 0, "§6" + item.getName(), 
-								"§7World: §b" + item.getWorld(),
-								"§7X: §b" + item.getX(),
-								"§7Y: §b" + item.getY(),
-								"§7Z: §b" + item.getZ(),
-								"§7Yaw: §b" + item.getYaw(),
-								"§7Pitch: §b" + item.getPitch());
+						return ItemUtils.createItem(Material.PAPER, 1, 0, "Â§6" + item.getName(), 
+								"Â§7World: Â§b" + item.getWorld(),
+								"Â§7X: Â§b" + item.getX(),
+								"Â§7Y: Â§b" + item.getY(),
+								"Â§7Z: Â§b" + item.getZ(),
+								"Â§7Yaw: Â§b" + item.getYaw(),
+								"Â§7Pitch: Â§b" + item.getPitch());
 					}
-				}.setAction(e -> {
-					Warps.deleteWarp(item);
-				});
+				};
 			}
 			
 			@Override
@@ -140,8 +142,8 @@ public class GUIs {
 			}
 		});
 		
-		builder.addPreviousPageItem(48, ItemUtils.createItem(ItemUtils.arrowLeft(DyeColor.WHITE), "§7Previous page"));
-		builder.addNextPageItem(52, ItemUtils.createItem(ItemUtils.arrowRight(DyeColor.WHITE), "§7Next page"));
+		builder.addPreviousPageItem(48, ItemUtils.createItem(ItemUtils.arrowLeft(VersionedDyeColor.WHITE), "Â§7Previous page"));
+		builder.addNextPageItem(52, ItemUtils.createItem(ItemUtils.arrowRight(VersionedDyeColor.WHITE), "Â§7Next page"));
 		
 		return builder.build();
 	}

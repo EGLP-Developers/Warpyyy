@@ -9,8 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.Warpyyy.EGLP.commands.CustomWarp_CMD;
-import me.Warpyyy.EGLP.commands.Warp_CMDs;
+import me.Warpyyy.EGLP.commands.CommandCustomWarp;
+import me.Warpyyy.EGLP.commands.CommandWarp;
 import me.mrletsplay.mrcore.bukkitimpl.MrCoreBukkitImpl;
 
 public class Main extends JavaPlugin implements Listener{
@@ -38,13 +38,12 @@ public class Main extends JavaPlugin implements Listener{
 		perm_list_warps = "warpyyy.list";
 		perm_customwarps_settings = "warpyyy.customwarp.settings";
 		
-		getCommand("setwarp").setExecutor(new Warp_CMDs());
-		getCommand("delwarp").setExecutor(new Warp_CMDs());
-		getCommand("warps").setExecutor(new Warp_CMDs());
-		getCommand("warp").setExecutor(new Warp_CMDs());
+		getCommand("setwarp").setExecutor(new CommandWarp());
+		getCommand("delwarp").setExecutor(new CommandWarp());
+		getCommand("warps").setExecutor(new CommandWarp());
+		getCommand("warp").setExecutor(new CommandWarp());
 		
-		getCommand("customwarp").setExecutor(new CustomWarp_CMD());
-		getCommand("cwarp").setExecutor(new CustomWarp_CMD());
+		getCommand("customwarp").setExecutor(new CommandCustomWarp());
 		
 		worlds = Config.cfg.getStringList("enabled-worlds");
 		
@@ -67,13 +66,13 @@ public class Main extends JavaPlugin implements Listener{
 	public static void addWorld(World world) {
 		worlds.add(world.getName());
 		Config.cfg.set("enabled-worlds", worlds);
-		Config.cfg.saveConfigSafely();
+		Config.cfg.saveToFile();
 	}
 	
 	public static void removeWorld(World world) {
 		worlds.remove(world.getName());
 		Config.cfg.set("enabled-worlds", worlds);
-		Config.cfg.saveConfigSafely();
+		Config.cfg.saveToFile();
 	}
 	
 	public static List<String> getEnabledWorlds(){

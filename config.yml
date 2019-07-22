@@ -1,7 +1,8 @@
+### CustomConfig version: 2.0
 # The {prefix} placeholder to be used in messages
-prefix: §6Warp§byyy §7 | 
+prefix: "§6Warp§byyy §7 | "
 # Defines the language file to use for messages. Default locale: en. Available locales: de, en (+ custom {locale}.yml files)
-locale: en
+locale: "en"
 # An update is available :O
 check-for-updates: true
 # Enable the customwarp system to let user create there own warps
@@ -12,6 +13,6 @@ max-customwarps: 5
 use-worlds: false
 # More worlds
 enabled-worlds:
-  - world
-  - world_nether
-  - world_the_end
+  - "world"
+  - "world_nether"
+  - "world_the_end"
