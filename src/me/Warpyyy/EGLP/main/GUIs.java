@@ -6,14 +6,14 @@ import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUIBuildEvent;
-import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUIBuildPageItemEvent;
-import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUIBuilderMultiPage;
-import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUIElement;
-import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.GUIMultiPage;
-import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.ItemSupplier;
-import me.mrletsplay.mrcore.bukkitimpl.GUIUtils.StaticGUIElement;
 import me.mrletsplay.mrcore.bukkitimpl.ItemUtils;
+import me.mrletsplay.mrcore.bukkitimpl.gui.GUIBuilderMultiPage;
+import me.mrletsplay.mrcore.bukkitimpl.gui.GUIElement;
+import me.mrletsplay.mrcore.bukkitimpl.gui.GUIMultiPage;
+import me.mrletsplay.mrcore.bukkitimpl.gui.ItemSupplier;
+import me.mrletsplay.mrcore.bukkitimpl.gui.StaticGUIElement;
+import me.mrletsplay.mrcore.bukkitimpl.gui.event.GUIBuildEvent;
+import me.mrletsplay.mrcore.bukkitimpl.gui.event.GUIBuildPageItemEvent;
 import me.mrletsplay.mrcore.bukkitimpl.versioned.VersionedDyeColor;
 import me.mrletsplay.mrcore.bukkitimpl.versioned.VersionedMaterial;
 
@@ -90,7 +90,7 @@ public class GUIs {
 		builder.addPreviousPageItem(48, ItemUtils.createItem(ItemUtils.arrowLeft(VersionedDyeColor.WHITE), "§7Previous page"));
 		builder.addNextPageItem(52, ItemUtils.createItem(ItemUtils.arrowRight(VersionedDyeColor.WHITE), "§7Next page"));
 		
-		return builder.build();
+		return builder.create();
 	}
 	
 	private static GUIMultiPage<Warp> buildWarpListGUI(){
@@ -145,7 +145,7 @@ public class GUIs {
 		builder.addPreviousPageItem(48, ItemUtils.createItem(ItemUtils.arrowLeft(VersionedDyeColor.WHITE), "§7Previous page"));
 		builder.addNextPageItem(52, ItemUtils.createItem(ItemUtils.arrowRight(VersionedDyeColor.WHITE), "§7Next page"));
 		
-		return builder.build();
+		return builder.create();
 	}
 	
 }
